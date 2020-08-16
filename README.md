@@ -14,10 +14,11 @@
 </p>
 
 <p align="center">
-    <a href="#descricao">Description</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;    
-    <a href="#contato">Contat</a>
+    <a href="#description">Description</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;    
+    <a href="#contat">Contat</a>
 </p>
 
+## Description
  - Telegram Bot
  - Go (golang)
    - Go mod
@@ -28,7 +29,7 @@
    - Multi-stage build
  - Makefile
  
-## Contato
+## Contat
 <a href="https://www.linkedin.com/in/ruiblaese/" target="_blank" >
   <img alt="Linkedin - Rui Richard Blaese" src="https://img.shields.io/badge/Linkedin--%23F8952D?style=social&logo=linkedin">
 </a>&nbsp;&nbsp;&nbsp;
