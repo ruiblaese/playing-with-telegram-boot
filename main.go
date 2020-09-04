@@ -2,10 +2,12 @@ package main
 
 import (
 	"log"
+	"net/http"
 	"os"
 	"strconv"
 	"strings"
 
+	"github.com/gin-gonic/gin"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
 
 	"github.com/joho/godotenv"
@@ -48,22 +50,40 @@ func main() {
 	msgStarted := tgbotapi.NewMessage(STARTED_MSG_CHAT_ID, "boot stated")
 	bot.Send(msgStarted)
 
-	for update := range updates {
-		if update.Message == nil { // ignore any non-Message Updates
-			continue
+	go func() {
+		for update := range updates {
+			if update.Message == nil { // ignore any non-Message Updates
+				continue
+			}
+
+			log.Printf("[%s] %s", update.Message.From.UserName, update.Message.Text)
+
+			log.Printf("Chat Id: %v", update.Message.Chat.ID)
+
+			textMessage := "Comando ou ação não encontrada"
+			if strings.ToLower(update.Message.Text) == "marco" {
+				textMessage = "Polo!!!"
+			}
+			msg := tgbotapi.NewMessage(update.Message.Chat.ID, "boot: "+textMessage)
+			msg.ReplyToMessageID = update.Message.MessageID
+
+			bot.Send(msg)
 		}
+	}()
 
-		log.Printf("[%s] %s", update.Message.From.UserName, update.Message.Text)
+	r := gin.Default()
+	r.POST("sendmsg", func(c *gin.Context) {
 
-		log.Printf("Chat Id: %v", update.Message.Chat.ID)
+		buf := make([]byte, 1024)
+		num, _ := c.Request.Body.Read(buf)
+		reqBody := string(buf[0:num])
 
-		textMessage := "Comando ou ação não encontrada"
-		if strings.ToLower(update.Message.Text) == "marco" {
-			textMessage = "Polo!!!"
-		}
-		msg := tgbotapi.NewMessage(update.Message.Chat.ID, "boot: "+textMessage)
-		msg.ReplyToMessageID = update.Message.MessageID
+		msgStarted := tgbotapi.NewMessage(STARTED_MSG_CHAT_ID, reqBody)
+		bot.Send(msgStarted)
 
-		bot.Send(msg)
-	}
+		c.Status(200)
+	})
+
+	http.ListenAndServe(":8081", r)
+
 }

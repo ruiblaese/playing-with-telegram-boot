@@ -6,6 +6,6 @@ push:
 
 build-push:
 	docker build --pull --rm -f "Dockerfile" -t ruiblaese/bot:latest "."
-	docker tag ruiblaese/bot:latest ruiblaese/bot:0.0.3
+	docker tag ruiblaese/bot:latest ruiblaese/bot:0.0.5
 	docker push ruiblaese/bot:latest	
-	docker push ruiblaese/bot:0.0.3
+	docker push ruiblaese/bot:0.0.5
